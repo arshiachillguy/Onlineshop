@@ -1,27 +1,38 @@
 package com.example.demo.products;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.validation.annotation.Validated;
+import lombok.Value;
+
+import javax.validation.Valid;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Validated
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id ;
 
-    String name;
-    String description;
-    Integer price;
-    String category;
+    @NotBlank(message = "name is required")
+    @Column(nullable = false)
+    private String name;
+
+    @Size(max = 300)
+    private String description;
+
+    @NotNull(message = "price is required")
+    @Min(value = 0 , message = "perice must be positive")
+    private Integer price;
+    private String category;
 }
+
+
