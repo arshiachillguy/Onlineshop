@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.products.Product;
 import com.example.demo.service.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -28,17 +29,17 @@ public class ProductController {
     }
 
     @PostMapping
-    public Product postProducts(@Valid @RequestBody Product product){
+    public Product postProducts(@Valid @RequestBody Product product , BindingResult result){
         return productService.saveProducts(product);
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id:[0-9]+}")
     public Optional<Product> getproductById(@PathVariable long id){
         return productService.getProductByID(id);
     }
 
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id:[0-9]+}")
     public void DeleteproductsById(@PathVariable long id){
         productService.deleteProductByID(id);
     }
