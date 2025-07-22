@@ -29,7 +29,6 @@ public class Product {
     @Size(max = 300)
     private String description;
 
-//    @NotNull(message = "price is required")
     @Min(value = 0 , message = "perice must be positive")
     private Integer price;
     private String category;
