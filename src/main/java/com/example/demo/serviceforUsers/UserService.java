@@ -2,10 +2,12 @@ package com.example.demo.serviceforUsers;
 
 import com.example.demo.Users.user;
 import com.example.demo.repositoriesforusers.Usersrepository;
-import org.apache.catalina.User;
+import jakarta.transaction.Transactional;
+
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 
 import java.util.List;
 
@@ -15,13 +17,6 @@ public class UserService {
     @Autowired
     public Usersrepository usersrepository;
 
-    public void ResisterUser(@NotNull User user){
-        if (usersrepository.existsByUsername(user.getUsername())){
-            throw new RuntimeException("user already existed !");
-        }
-
-    }
-
     public List<user> saveuser(List<user> user){
         return usersrepository.saveAll(user);
     }
@@ -30,7 +25,16 @@ public class UserService {
        return usersrepository.findAll();
     }
 
-
+    @Transactional
+    public user registerUser(@NotNull user user){
+        if (usersrepository.existsByUsername(user.getUsername())){
+            throw new RuntimeException("username already exists !");
+        }
+        if (usersrepository.existsByEmail(user.getEmail())){
+            throw new RuntimeException("email already exits ! ");
+        }
+        return usersrepository.save(user);
+    }
 
 
 }
