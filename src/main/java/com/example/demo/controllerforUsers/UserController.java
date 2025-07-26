@@ -44,7 +44,7 @@ public class UserController {
     @PostMapping("/register")
     public String processRegistraion(@ModelAttribute("user") user user){
         userService.registerUser(user);
-        return "redirect:/v1/user/register?success";
+        return "redirect:/v1/products/view";
     }
 
 
