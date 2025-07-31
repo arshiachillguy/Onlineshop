@@ -19,15 +19,16 @@ public class user{
 
     @Column(unique = true)
     @Size(max = 200 )
+    @NotBlank(message = "Username is required")
     private String username;
 
     @Column(unique = true)
-    @Email
-    @NotBlank
     @Size(max = 200)
+    @Email(message = "Email should be valid")
     private String email;
 
-    @NotNull
+
+    @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
     public user(String username, String email, String password) {

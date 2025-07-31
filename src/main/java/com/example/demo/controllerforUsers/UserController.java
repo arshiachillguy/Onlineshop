@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -41,13 +42,13 @@ public class UserController {
         model.addAttribute("user" , new user());
         return "register";
     }
+
     @PostMapping("/register")
-    public String processRegistraion(@ModelAttribute("user") user user){
-        userService.registerUser(user);
+    public String processRegistration(@Valid @ModelAttribute("user") User user, BindingResult result, RedirectAttributes redirectAttributes) {
+        if (result.hasErrors()) {
+            return "register";
+        }
+        redirectAttributes.addAttribute("success", true);
         return "redirect:/v1/products/view";
     }
-
-
-
-
 }
