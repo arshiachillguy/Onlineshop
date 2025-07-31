@@ -1,6 +1,6 @@
 package com.example.demo.serviceforUsers;
 
-import com.example.demo.Users.user;
+import com.example.demo.Users.User;
 import com.example.demo.repositoriesforusers.Usersrepository;
 import jakarta.transaction.Transactional;
 
@@ -18,16 +18,16 @@ public class UserService {
     @Autowired
     public Usersrepository usersrepository;
 
-    public List<user> saveuser(List<user> user){
+    public List<User> saveuser(List<User> user){
         return usersrepository.saveAll(user);
     }
 
-    public List<user> getallusers() {
+    public List<User> getallusers() {
        return usersrepository.findAll();
     }
 
     @Transactional
-    public user registerUser(@NotNull user user){
+    public User registerUser(@NotNull User user){
         if (usersrepository.existsByUsername(user.getUsername())){
             throw new RuntimeException("username already exists !");
         }

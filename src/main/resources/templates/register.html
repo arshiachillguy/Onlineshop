@@ -127,7 +127,7 @@
         Registration successful!
     </div>
 
-    <form th:action="@{/register}" th:object="${user}" method="post">
+    <form th:action="@{/v1/user/register}" th:object="${user}" method="post">
         <div th:if="${#fields.hasErrors('*')}" class="error">
             Please fix the errors below.
         </div>

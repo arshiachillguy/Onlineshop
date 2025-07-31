@@ -11,7 +11,7 @@ import javax.validation.constraints.*;
 @AllArgsConstructor
 @Entity
 @Table(name = "userlist")
-public class user{
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,7 +31,7 @@ public class user{
     @Size(min = 8, message = "Password must be at least 8 characters")
     private String password;
 
-    public user(String username, String email, String password) {
+    public User(String username, String email, String password) {
         this.username = username;
         this.email = email;
         this.password = password;

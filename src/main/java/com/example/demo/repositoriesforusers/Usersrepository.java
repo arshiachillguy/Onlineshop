@@ -1,22 +1,20 @@
 package com.example.demo.repositoriesforusers;
 
-import com.example.demo.Users.user;
+import com.example.demo.Users.User;
 
-import org.apache.catalina.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
 import java.util.Optional;
 @EnableJpaRepositories
 @Repository
-public interface Usersrepository extends JpaRepository<user, Long> {
+public interface Usersrepository extends JpaRepository<User, Long> {
 
 
-    Optional<user> findByUsername(String username);
+    Optional<User> findByUsername(String username);
 
-    Optional<user> findByEmail(String email);
+    Optional<User> findByEmail(String email);
 
     boolean existsByUsername(String username);
 
