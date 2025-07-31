@@ -2,44 +2,224 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
   <title>Add Product</title>
-</head>
-<body>
-<h1>Add New Product</h1>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- استفاده از فونت آیکون‌های Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+      --primary-color: #4361ee;
+      --secondary-color: #3f37c9;
+      --accent-color: #4cc9f0;
+      --light-color: #f8f9fa;
+      --dark-color: #212529;
+      --success-color: #4bb543;
+      --danger-color: #ff3333;
+    }
 
-<form th:action="@{/v1/products/save}" th:object="${product}" method="post">
-  <div>
-    <label>Name:</label>
-    <input type="text" th:field="*{name}" required>
-  </div>
-  <div>
-    <label>Price:</label>
-    <input type="number" th:field="*{price}" step="0.01" required>
-  </div>
-  <div>
-    <label>Description:</label>
-    <input type="text" th:field="*{description}">
-  </div>
-  <div>
-    <label>Category:</label>
-    <input type="text" th:field="*{category}">
-  </div>
-  <button type="submit">Save Product</button>
-</form>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-<a th:href="@{/v1/products/view}">Back to List</a>
-
-<style>
-  body {
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
       background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
       background-size: 400% 400%;
       animation: gradient 15s ease infinite;
-  }
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      color: var(--dark-color);
+    }
 
-  @keyframes gradient {
+    @keyframes gradient {
       0% { background-position: 0% 50%; }
       50% { background-position: 100% 50%; }
       100% { background-position: 0% 50%; }
-  }
-</style>
+    }
+
+    .container {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+      width: 100%;
+      max-width: 600px;
+      margin: 20px 0;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: var(--primary-color);
+      font-size: 2.2rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--dark-color);
+    }
+
+    input[type="text"],
+    input[type="number"],
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 2px solid #ddd;
+      border-radius: 6px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background-color: var(--light-color);
+    }
+
+    input[type="text"]:focus,
+    input[type="number"]:focus,
+    select:focus {
+      border-color: var(--primary-color);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.2);
+    }
+
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-align: center;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--secondary-color);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--primary-color);
+      border: 2px solid var(--primary-color);
+    }
+
+    .btn-secondary:hover {
+      background-color: rgba(67, 97, 238, 0.1);
+    }
+
+    .form-actions {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 30px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .icon-input {
+      position: relative;
+    }
+
+    .icon-input i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6c757d;
+    }
+
+    .icon-input input {
+      padding-left: 40px;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .form-actions {
+        flex-direction: column;
+      }
+
+      .btn {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+
+    /* اعتبارسنجی */
+    input:required:invalid {
+      border-color: var(--danger-color);
+    }
+
+    input:required:valid {
+      border-color: #28a745;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h1><i class="fas fa-plus-circle"></i> Add New Product</h1>
+
+  <form th:action="@{/v1/products/save}" th:object="${product}" method="post">
+    <div class="form-group icon-input">
+      <label for="name">Product Name</label>
+      <i class="fas fa-tag"></i>
+      <input type="text" id="name" th:field="*{name}" placeholder="Enter product name" required>
+    </div>
+
+    <div class="form-group icon-input">
+      <label for="price">Price</label>
+      <i class="fas fa-dollar-sign"></i>
+      <input type="number" id="price" th:field="*{price}" step="0.01" placeholder="0.00" required>
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" th:field="*{description}" class="form-control" rows="3" placeholder="Enter product description"></textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Category</label>
+      <select id="category" th:field="*{category}" class="form-control">
+        <option value="">Select a category</option>
+        <option value="Electronics">Electronics</option>
+        <option value="Clothing">Clothing</option>
+        <option value="Home">Home</option>
+        <option value="Sports">Sports</option>
+      </select>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="btn btn-primary">
+        <i class="fas fa-save"></i> Save Product
+      </button>
+      <a th:href="@{/v1/products/view}" class="btn btn-secondary">
+        <i class="fas fa-arrow-left"></i> Back to List
+      </a>
+    </div>
+  </form>
+</div>
 </body>
 </html>

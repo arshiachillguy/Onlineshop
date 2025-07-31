@@ -1,39 +1,176 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>ثبت نام کاربر</title>
+    <meta charset="UTF-8">
+    <title>Register</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #4361ee;
+            --secondary-color: #3f37c9;
+            --accent-color: #4cc9f0;
+            --light-color: #f8f9fa;
+            --dark-color: #212529;
+            --success-color: #4bb543;
+            --danger-color: #ff3333;
+            --warning-color: #ffc107;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+            min-height: 100vh;
+            padding: 40px 20px;
+            color: var(--dark-color);
+        }
+
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+            font-size: 2rem;
+            font-weight: 600;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 14px;
+        }
+
+        .btn {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .error {
+            color: var(--danger-color);
+            font-size: 13px;
+        }
+
+        .success {
+            color: var(--success-color);
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .strength-meter {
+            height: 5px;
+            background-color: #ddd;
+            margin-top: 5px;
+        }
+
+        #strength-meter {
+            height: 5px;
+            width: 0%;
+            background-color: red;
+            transition: width 0.3s ease;
+        }
+    </style>
 </head>
 <body>
-<h1>register</h1>
-<form th:action="@{/v1/user/register}" th:object="${user}" method="post">
-    <div>
-        <label>Username:</label>
-        <input type="text" th:field="*{username}" required>
-    </div>
-    <div>
-        <label>Email:</label>
-        <input type="email" th:field="*{email}" required>
-    </div>
-    <div>
-        <label>password:</label>
-        <input type="password" th:field="*{password}" required>
-    </div>
-    <button type="submit">finish</button>
-</form>
-<div th:if="${param.success}">
-</div>
-<style>
-    body {
-        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-        background-size: 400% 400%;
-        animation: gradient 15s ease infinite;
-    }
+<div class="container">
+    <h2><i class="fas fa-user-plus"></i> Register</h2>
 
-    @keyframes gradient {
-        0% { background-position: 0% 50%; }
-        50% { background-position: 100% 50%; }
-        100% { background-position: 0% 50%; }
+    <div th:if="${param.success}" class="success">
+        Registration successful!
+    </div>
+
+    <form th:action="@{/register}" th:object="${user}" method="post">
+        <div th:if="${#fields.hasErrors('*')}" class="error">
+            Please fix the errors below.
+        </div>
+
+        <div>
+            <label>Username</label>
+            <input type="text" th:field="*{username}" />
+            <div th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="error"></div>
+        </div>
+
+        <div>
+            <label>Email</label>
+            <input type="email" th:field="*{email}" />
+            <div th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="error"></div>
+        </div>
+
+        <div>
+            <label>Password</label>
+            <input type="password" th:field="*{password}" oninput="updatePasswordStrength(this.value)" />
+            <div th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="error"></div>
+            <div class="strength-meter">
+                <div id="strength-meter"></div>
+            </div>
+        </div>
+
+        <button type="submit" class="btn">Submit</button>
+    </form>
+</div>
+
+<script>
+    function updatePasswordStrength(password) {
+        const meter = document.getElementById('strength-meter');
+        let strength = 0;
+        if (password.length >= 8) strength += 1;
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        const width = strength * 25;
+        meter.style.width = `${width}%`;
+        meter.style.backgroundColor = strength >= 3 ? 'green' : 'red';
     }
-</style>
+</script>
 </body>
 </html>
+```
