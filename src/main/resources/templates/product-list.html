@@ -279,7 +279,13 @@
                 <a th:href="@{'/v1/products/edit/' + ${product.id}}" class="action-btn edit-btn">
                     <i class="fas fa-edit"></i> Edit
                 </a>
-                <a th:href="@{'/v1/products/delete/' + ${product.id}}" class="action-btn delete-btn">
+<!--                <a th:href="@{'/v1/products/delete/' + ${product.id}}" class="action-btn delete-btn">-->
+<!--                    <i class="fas fa-trash-alt"></i> Delete-->
+<!--                    -->
+<!--                </a>-->
+                <a th:href="@{'/v1/products/delete/' + ${product.id}}"
+                   class="action-btn delete-btn"
+                   onclick="return confirm('are you sure about this action ?')">
                     <i class="fas fa-trash-alt"></i> Delete
                 </a>
             </td>
