@@ -1,4 +1,4 @@
-🛍️ SecondLife - Second-Hand Online Marketplace
+🛍️ Second-Hand Online Marketplace
 
 A moderne - commerce platform for buying and selling pre-loved items with ease
 
@@ -9,8 +9,6 @@ A moderne - commerce platform for buying and selling pre-loved items with ease
     🔍 Smart search with advanced filters
 
     🛒 Secure shopping cart with multiple payment options
-
-    📱 Fully responsive design (mobile, tablet, desktop)
 
     ⭐ Seller rating system for trust-building
 
