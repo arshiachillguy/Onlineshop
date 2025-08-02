@@ -1,6 +1,6 @@
 🛍️ SecondLife - Second-Hand Online Marketplace
 
-A modern e-commerce platform for buying and selling pre-loved items with ease
+A moderne - commerce platform for buying and selling pre-loved items with ease
 
 -------------------------------------------------------------------------------------------
 
@@ -24,7 +24,9 @@ A modern e-commerce platform for buying and selling pre-loved items with ease
 📬 Contact
 
 Project Link: https://github.com/arshiachillguy/Onlineshop
+
 Email: arshiagharedaghi9@gmail.com
+
 Linkedin : https://www.linkedin.com/in/arshia-gharedaghi-655224348/
 
 
