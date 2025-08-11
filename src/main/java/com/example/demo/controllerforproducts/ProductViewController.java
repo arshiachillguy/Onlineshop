@@ -8,6 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.List;
+
 @Controller
 public class ProductViewController {
     @Autowired
@@ -16,6 +18,7 @@ public class ProductViewController {
 //    show all products
     @GetMapping("v1/products/view")
     public String showproducts( Model model){
+        List<Product> products = productService.getAllProducts();
         model.addAttribute("products" , productService.getAllProducts());
         return "product-list";
     }
