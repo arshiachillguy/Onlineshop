@@ -292,6 +292,7 @@
                 <td class="price-cell" th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}"></td>
                 <td th:text="${product.description} ?: 'N/A'"></td>
                 <td th:text="${product.category}"></td>
+                <td th:text="${product.quantity}"></td>
                 <td class="action-cell">
                     <a th:href="@{'/v1/products/edit/' + ${product.id}}" class="action-btn edit-btn">
                         <i class="fas fa-edit"></i> Edit

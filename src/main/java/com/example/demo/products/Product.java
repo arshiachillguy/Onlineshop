@@ -32,6 +32,7 @@ public class Product {
     @Min(value = 0 , message = "perice must be positive")
     private int price;
     private String category;
+    private Integer quantity;
 
     public Long getId() {
         return id;
@@ -71,6 +72,14 @@ public class Product {
 
     public void setCategory(String category) {
         this.category = category;
+    }
+
+    public Integer getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(Integer quantity) {
+        this.quantity = quantity;
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.demo.controllerforproducts;
 
 import com.example.demo.products.Product;
+import com.example.demo.repositoriesforproducts.ProductRepository;
 import com.example.demo.serviceforproducts.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,12 +15,14 @@ import java.util.List;
 public class ProductViewController {
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductRepository productRepository;
 
 //    show all products
     @GetMapping("v1/products/view")
     public String showproducts( Model model){
-        List<Product> products = productService.getAllProducts();
-        model.addAttribute("products" , productService.getAllProducts());
+        List<Product> products = productRepository.findAllByOrderByIdAsc();
+        model.addAttribute("products" , products);
         return "product-list";
     }
 // show form for add new products
