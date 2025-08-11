@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Product Summary Cards</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body style="background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%); padding: 40px 20px; font-family: 'Poppins', sans-serif;">
+
+<div style="background-color: rgba(255, 255, 255, 0.95); padding: 30px; max-width: 900px; margin: 0 auto; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.15);">
+    <h1 style="text-align:center; color:#4361ee; font-weight:600; font-size:2.2rem; margin-bottom: 30px;">
+        <i class="fas fa-box"></i> Products Summary
+    </h1>
+
+    <div style="margin-bottom: 20px;">
+        <input type="text" id="searchInput" placeholder="Search by name or price..." style="width: 100%; padding: 8px 12px; font-size: 16px; border-radius: 6px; border: none; box-shadow: 0 2px 5px rgba(0,0,0,0.1);" />
+    </div>
+
+    <div th:if="${products == null or products.isEmpty()}" style="text-align:center; color:#6c757d; font-size: 18px; padding: 30px;">
+        <i class="fas fa-box-open" style="font-size: 40px; margin-bottom: 15px;"></i>
+        <p>No products found.</p>
+    </div>
+
+    <div th:unless="${products == null or products.isEmpty()}" style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: center;">
+        <div th:each="product : ${products}" style="background-color: white; border-radius: 12px; padding: 20px; width: 180px; box-shadow: 0 10px 20px rgba(0,0,0,0.1); text-align: center; transition: transform 0.3s ease;">
+
+            <h3 th:text="${product.name}" style="color: #4361ee; margin-bottom: 15px;"></h3>
+
+            <p th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}" style="font-weight: 700; color: #4bb543; font-size: 1.1rem; margin-bottom: 20px;"></p>
+
+            <a th:href="@{/v1/order(productId=${product.id})}"
+               style="display: inline-block; padding: 8px 16px; border-radius: 6px;
+          background-color: #4CAF50; color: white; text-decoration: none;
+          font-weight: 600; cursor: pointer; transition: all 0.3s ease;">
+                <i class="fas fa-shopping-cart"></i> Buy Now
+            </a>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    document.getElementById('searchInput').addEventListener('input', function() {
+        let filter = this.value.toLowerCase();
+        let cards = document.querySelectorAll('div[th\\:each] > div');
+        cards.forEach(card => {
+            let name = card.querySelector('h3').innerText.toLowerCase();
+            let price = card.querySelector('p').innerText.toLowerCase();
+            if (name.includes(filter) || price.includes(filter)) {
+                card.style.display = '';
+            } else {
+                card.style.display = 'none';
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
