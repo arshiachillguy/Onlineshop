@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Order Product</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    :root {
+        --primary-color: #4361ee;
+        --secondary-color: #3f37c9;
+        --accent-color: #4cc9f0;
+        --light-color: #f8f9fa;
+        --dark-color: #212529;
+        --success-color: #4bb543;
+        --danger-color: #ff3333;
+        --warning-color: #ffc107;
+    }
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+        background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+        background-size: 400% 400%;
+        animation: gradient 15s ease infinite;
+        min-height: 100vh;
+        padding: 40px 20px;
+        color: var(--dark-color);
+    }
+
+    @keyframes gradient {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .container {
+        background-color: rgba(255, 255, 255, 0.95);
+        border-radius: 12px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        padding: 30px;
+        width: 100%;
+        max-width: 500px;
+        margin: 0 auto;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 30px;
+        color: var(--primary-color);
+        font-size: 2rem;
+        font-weight: 600;
+    }
+
+    form {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    label {
+        font-weight: 500;
+        margin-bottom: 5px;
+    }
+
+    input {
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    .btn {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+
+    .btn:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .error {
+        color: var(--danger-color);
+        font-size: 13px;
+    }
+
+    .success {
+        color: var(--success-color);
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .product-details {
+        text-align: center;
+        margin-bottom: 20px;
+        color: #212529;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2><i class="fas fa-shopping-cart"></i> Order Product</h2>
+
+  <div th:if="${param.success}" class="success" th:text="${param.success}"></div>
+  <div th:if="${param.error}" class="error" th:text="${param.error}"></div>
+
+    <form th:action="@{/v1/order/submit}" method="post">
+      <!-- نمایش نام محصول -->
+      <div style="margin-bottom: 15px;">
+        <label>Product Name:</label>
+        <p th:text="${product.name}" style="font-weight: bold;"></p>
+      </div>
+
+      <!-- نمایش قیمت محصول -->
+      <div style="margin-bottom: 15px;">
+        <label>Price:</label>
+        <p th:text="${'$' + #numbers.formatDecimal(product.price, 1, 2)}" style="color: green;"></p>
+      </div>
+
+      <!-- فیلد تعداد قابل ویرایش -->
+      <div style="margin-bottom: 15px;">
+        <label>Quantity:</label>
+        <input type="number" name="quantity" min="1" required style="width: 100%; padding: 8px;">
+      </div>
+
+      <!-- ارسال شناسه محصول به‌صورت hidden -->
+      <input type="hidden" name="productId" th:value="${product.id}" />
+
+      <!-- دکمه ارسال -->
+      <button type="submit" style="padding: 10px 20px; background-color: #4CAF50; color: white; border: none; border-radius: 5px;">
+        Submit Order
+      </button>
+    </form>
+
+
+  </form>
+</div>
+</body>
+</html>
