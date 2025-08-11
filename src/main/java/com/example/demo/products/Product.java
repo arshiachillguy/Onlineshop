@@ -30,7 +30,7 @@ public class Product {
     private String description;
 
     @Min(value = 0 , message = "perice must be positive")
-    private Integer price;
+    private int price;
     private String category;
 
     public Long getId() {
@@ -57,11 +57,11 @@ public class Product {
         this.description = description;
     }
 
-    public Integer getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
