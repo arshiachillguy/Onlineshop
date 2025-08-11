@@ -55,4 +55,13 @@ public class ProductViewController {
         redirectAttributes.addFlashAttribute("successMessage", "Product updated successfully!");
         return "redirect:/v1/products/view";
     }
+
+
+    //show product to main user for buy some things
+    @GetMapping("v1/MainList")
+    public String showMainPage(Model model){
+        model.addAttribute("products" , productService.getAllProducts());
+        return "product-list-main";
+    }
+
 }
