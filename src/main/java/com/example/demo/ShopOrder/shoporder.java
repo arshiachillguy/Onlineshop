@@ -1,9 +1,13 @@
 package com.example.demo.ShopOrder;
 
+import com.example.demo.Users.User;
+import com.example.demo.cartitem.CartITEM;
 import com.example.demo.products.Product;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class shoporder {
@@ -19,6 +23,8 @@ public class shoporder {
     private Integer quantity;
 
     private LocalDateTime orderTime = LocalDateTime.now() ;
+
+    private String status = "PENDING";
 
     public shoporder(){
     }
@@ -54,5 +60,13 @@ public class shoporder {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
