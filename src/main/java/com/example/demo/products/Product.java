@@ -4,12 +4,10 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 
-import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+
 import javax.validation.constraints.Size;
 
 @Data
@@ -33,6 +31,7 @@ public class Product {
     private int price;
     private String category;
     private Integer quantity;
+    private Integer Stock;
 
     public Long getId() {
         return id;
@@ -80,6 +79,14 @@ public class Product {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Integer getStock() {
+        return Stock;
+    }
+
+    public void setStock(Integer stock) {
+        Stock = stock;
     }
 }
 
