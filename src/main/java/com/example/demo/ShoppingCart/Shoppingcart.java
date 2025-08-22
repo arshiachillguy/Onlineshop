@@ -7,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,4 +21,6 @@ public class Shoppingcart {
 
     @OneToOne
     private User user;
+
+    private BigDecimal totalPrice; // قیمت کل سبد خرید
 }
