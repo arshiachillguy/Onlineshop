@@ -2,6 +2,7 @@ package com.example.demo.CART;
 
 import com.example.demo.Users.User;
 import com.example.demo.cartitem.CartITEM;
+import com.example.demo.products.Product;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class cart {
     private User user;
 
     private boolean isCompleted = false;
+    
+    private String product;
 
     public Long getId() {
         return id;
@@ -51,5 +54,9 @@ public class cart {
 
     public void setCompleted(boolean completed) {
         isCompleted = completed;
+    }
+
+    public String getProduct() {
+        return this.product ;
     }
 }
