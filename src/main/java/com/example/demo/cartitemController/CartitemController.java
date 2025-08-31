@@ -3,95 +3,75 @@ package com.example.demo.cartitemController;
 import com.example.demo.CartITEMservice.cartitemservice;
 import com.example.demo.cartitem.CartITEM;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.naming.InsufficientResourcesException;
 import java.util.List;
 
-@Controller
-@RequestMapping("v1/orderbasket")
+@RestController
+@RequestMapping("/api/cart-items")
 public class CartitemController {
 
     @Autowired
     private cartitemservice cartitemservice;
 
-
-    // نمایش صفحه مدیریت
-    @GetMapping("/management")
-    public String showManagementPage() {
-        return "orderBasket"; // نمایش فایل HTML
+    @GetMapping("/manage")
+    public String showCartManagementPage() {
+        return "Basket";
     }
 
-    // افزودن آیتم (با redirect به صفحه مدیریت)
-    @PostMapping("/add")
-    public String addItemToCart(
-            @RequestParam Long cartId,
-            @RequestParam Long productId,
-            @RequestParam Long quantity,
-            RedirectAttributes redirectAttributes) {
-
+    @GetMapping("/cart")
+    public String getitembycartid(@RequestParam Long cartid , Model model){
         try {
-            cartitemservice.additemtoCart(cartId, productId, quantity);
-            redirectAttributes.addFlashAttribute("success", "محصول با موفقیت اضافه شد");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            List<CartITEM> items = cartitemservice.getItemsByCartId(cartid);
+            model.addAttribute("cartitem" , items);
+            model.addAttribute("success" , "cart item loaded successfully for cart id :" + cartid);
+        } catch (RuntimeException e){
+            model.addAttribute("error" , "Error" + e.getMessage());
         }
-
-        return "redirect: /cart/items/management?cartId=" + cartId;
+        return "Basket";
     }
 
-    // ویرایش آیتم
-    @PostMapping("/{itemId}/edit")
-    public String updateItem(
-            @PathVariable Long itemId,
-            @RequestParam int newQuantity,
-            @RequestParam Long cartId, // برای redirect
-            RedirectAttributes redirectAttributes) {
-
+    @PostMapping("/add-item")
+    public String addItem(Long cartId , Long productId , Long quantity , Model model) throws InsufficientResourcesException, IllegalAccessException {
         try {
-            cartitemservice.EditITEM(itemId, newQuantity);
-            redirectAttributes.addFlashAttribute("success", "تعداد با موفقیت ویرایش شد");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            CartITEM item = cartitemservice.additemtoCart(cartId, productId, quantity);
+            model.addAttribute("succcess " , "item added successfully to cart id :" + cartId);
+        } catch (IllegalAccessException e) {
+            model.addAttribute("error", "Invalid input: " + e.getMessage());
+        } catch (InsufficientResourcesException e) {
+            model.addAttribute("error", "Insufficient stock: " + e.getMessage());
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error: " + e.getMessage());
         }
-
-        return "redirect:/cart/items/management?cartId=" + cartId;
+    return "Basket";
     }
 
-    // حذف آیتم
-    @PostMapping("/{itemId}/delete")
-    public String deleteItem(
-            @PathVariable Long itemId,
-            @RequestParam Long cartId,
-            RedirectAttributes redirectAttributes) {
-
+    @RequestMapping( value = "/{cartitemId}" , method = RequestMethod.PUT)
+    public String updateItem(@PathVariable Long cartitemId, @RequestParam int newQuantity, Model model){
         try {
-            cartitemservice.DeleteITEM(itemId);
-            redirectAttributes.addFlashAttribute("success", "آیتم با موفقیت حذف شد");
-        } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("error", e.getMessage());
+            cartitemservice.EditITEM(cartitemId, newQuantity);
+            model.addAttribute("success", "Item updated successfully for ID: " + cartitemId);
+        } catch (InsufficientResourcesException e) {
+            model.addAttribute("error", "Insufficient stock: " + e.getMessage());
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error: " + e.getMessage());
         }
-
-        return "redirect:/cart/items/management?cartId=" + cartId;
+        return "Basket";
     }
 
-    // مشاهده آیتم‌های سبد
-    @GetMapping("/management2")
-    public String viewCartItems(
-            @RequestParam Long cartId,
-            Model model) {
-
+    @RequestMapping(value = "/{cartitemId}", method = RequestMethod.DELETE)
+    public String deleteItem(@PathVariable Long cartitemId, Model model) {
         try {
-            List<CartITEM> items = cartitemservice.getItemsByCartId(cartId);
-            model.addAttribute("cartItems", items);
-            model.addAttribute("cartId", cartId);
-        } catch (Exception e) {
-            model.addAttribute("error", e.getMessage());
+            cartitemservice.DeleteITEM(cartitemId);
+            model.addAttribute("success", "Item deleted successfully for ID: " + cartitemId);
+        } catch (RuntimeException e) {
+            model.addAttribute("error", "Error: " + e.getMessage());
         }
-
-        return "orderBasket";
+        return "Basket";
     }
+
+
 }
+
